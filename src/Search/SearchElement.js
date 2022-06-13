@@ -237,6 +237,7 @@ export const List = styled.ul`
   font-size: 1.1rem;
   list-style-type: disc;
   padding-inline-start: 8px;
+
 `;
 export const Item = styled.li`
   position: relative;
@@ -247,50 +248,6 @@ export const Item = styled.li`
   border: 1px solid rgba(0,0,0,.125);
 
 `;
-export const Repos = styled.div`
-  font-size: 1.063rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: #343a40;
-  text-align: left;
-
-`;
-export const ReposCard = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  word-wrap: break-word;
-  background-color: #fff;
-  background-clip: border-box;
-  border: 1px solid rgba(0,0,0,.125);
-  border-radius: .25rem;
-  flex: 1 1 auto;
-  min-height: 1px;
-  padding: 1.25rem;
-  margin-bottom: .5rem;
-`;
-export const RowCentre = styled.div`
-  flex: 0 0 auto;
-  width: 50%;
-  max-width: 100%;
-  position: relative;
-
-  @media screen and (max-width: 767px){
-    position: relative;
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-  }
-`;
-export const RepoHeading = styled.h3`
-  margin-bottom: 1rem;
-  font-size: calc(1.3rem + .6vw);
-  margin-top: 0;
-  font-weight: 500;
-  line-height: 1.2; 
-`;
-
 
 
 

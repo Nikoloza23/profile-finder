@@ -3,12 +3,10 @@ import Home from './Search';
 
 function App() {
   return (
-    <div className="App">
-
+    <div className="Searcher">
       <Routes>
         <Route path="/" element={<Home />} />
       </Routes>
-
     </div>
   );
 }

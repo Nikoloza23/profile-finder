@@ -22,94 +22,69 @@ import {
   List,
   Badge,
   Item,
-  RowCentre,
-  ReposCard,
-  Repos,
-  RepoHeading
 } from './SearchElement';
+
 
 const Home = () => {
   const [username, setUsername] = useState("");
-  const [repos, setRepos] = useState([]);
-  const [user, setUser] = useState("");
-/* 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const response = await axios.get(`https://api.github.com/users/${username}/repos?per_page=5`);
-      setRepos(response.data.data)
-    }
-    fetchUsers()
-  }, {})
+  const [user, setUser] = useState([]);
+  const [isLoading, setIslaoding] = useState(false)
 
-  const onChangeHandler = (user) => {
-    setUser(user)
+
+  const searchUsers = (username) => {
+    return axios({
+      method: "get",
+      url: `https://api.github.com/search/users?q=${username}`,
+    }).then(res => {
+      return res.data;
+    }).catch((err) => {
+      console.log(err);
+    });
   }
- */
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    searchRepos();
-    searchUsers();
-  }
-  
-    const searchRepos = () => {
-      axios({
-        method: "get",
-        url: `https://api.github.com/users/${username}/repos?per_page=5`,
-      }).then(res => {
-        setRepos(res.data);
-      });
+
+  useEffect(() => {
+    if (username !== "") {
+      setIslaoding(true)
+      searchUsers(username).then((res) => {
+        setUser(res.items)
+      }).catch((err) => {
+        console.log(err);
+      }).finally(() => {
+        setIslaoding(false)
+      })
+    } else {
+      setUser([])
     }
-    const searchUsers = () => {
-      axios({
-        method: "get",
-        url: `https://api.github.com/users/${username}`,
-      }).then(res => {
-        setUser(res.data);
-      });
-    }
-  const renderRepo = (repo) => {
-    return (
-      <ReposCard key={repo.id}>
-        <Row>
-          <RowCentre>
-            <a href={repo.html_url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>{repo.name}</a>
-          </RowCentre>
-          <RowCentre>
-            <Badge style={{ textDecoration: "none" }}>Stars: {repo.stargazers_count}</Badge>
-            <Badge>Watchers: {repo.watchers_count}</Badge>
-            <Badge>Forks: {repo.forks_count}</Badge>
-            <Badge >Language: {repo.language}</Badge>
-          </RowCentre>
-        </Row>
-      </ReposCard>
-    );
-  }
+  }, [username])
+
+
   const renderUser = (user) => {
     return (
-      <ProfileCard>
-        <Row>
-          <UserAvatar>
-            <Img src={user.avatar_url} />
-            <a href={user.html_url} target="_blank" rel="noopener noreferrer"><UserBtn>View Profile</UserBtn></a>
-          </UserAvatar>
-          <RowRight>
-            <Badge>Public Repositories: {user.public_repos}</Badge>
-            <Badge>Public Gists: {user.public_gists}</Badge>
-            <Badge>Followers: {user.followers}</Badge>
-            <Badge>Following: {user.following}</Badge>
-            <br />
-            <br />
-            <List>
-              <Item><strong>Company: </strong>{user.company ? user.company : " N/A"}</Item>
-              <Item><strong>Bio: </strong>{user.bio ? user.bio : " N/A"}</Item>
-              <Item><strong>Email: </strong>{user.email ? user.email : " N/A"}</Item>
-              <Item><strong>Website/Blog: </strong><a href={user.blog} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>{user.blog}</a></Item>
-              <Item><strong>Location: </strong>{user.location ? user.location : " N/A"}</Item>
-              <Item><strong>Member Since: </strong>{new Date(user.created_at).toDateString()}</Item>
-            </List>
-          </RowRight>
-        </Row>
-      </ProfileCard>
+      <>
+        {!isLoading ? user.map((user) => {
+          return <ProfileCard key={user.id}>
+            <Row>
+              <UserAvatar>
+                <Img src={user.avatar_url} />
+                <a href={user.html_url} target="_blank" rel="noopener noreferrer"><UserBtn>View Profile</UserBtn></a>
+              </UserAvatar>
+              <RowRight>
+                <Badge>Public Repositories: {user.repos_url}</Badge>
+                <br />
+                <br />
+                <List>
+                  <Item><strong>Organizations: </strong>{user.organizations_url ? user.organizations_url : " N/A"}</Item>
+                  <Item><strong>Bio: </strong>{user.login ? user.login : " N/A"}</Item>
+                  <Item><strong>Type: </strong>{user.type ? user.type : " N/A"}</Item>
+                  <Item><strong>Website/Blog: </strong><a href={user.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>{user.url}</a></Item>
+                  <Item><strong>Score: </strong>{user.score ? user.score : " N/A"}</Item>
+                </List>
+              </RowRight>
+            </Row>
+          </ProfileCard>
+        }) : <h2>...Loading</h2>}
+      </>
+
     );
   }
 
@@ -127,14 +102,9 @@ const Home = () => {
               <Title>Search GitHub Users</Title>
               <TitleSub>Enter a username to search for user profile and repositories...</TitleSub>
               <SearchInput type='text' placeholder="GitHub Username..." value={username} autoFocus required onChange={e => setUsername(e.target.value)} />
-              <UserBtn onClick={handleSubmit}>Submit</UserBtn>
             </SearchCard>
             <Profile>
               {renderUser(user)}
-              <Repos>
-                <RepoHeading>Recently Added Public Repositories</RepoHeading>
-                {repos.map(renderRepo)}
-              </Repos>
             </Profile>
           </SearchContainer>
         </FormContent>
