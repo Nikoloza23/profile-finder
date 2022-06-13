@@ -96,7 +96,7 @@ export const SearchCard = styled.div`
 export const SearchInput = styled.input`
   outline: none;
   display: block;
-  width: 100%;
+  width: 95%;
   padding: .375rem .75rem;
   margin-bottom: 10px;
   font-size: 1rem;
@@ -248,9 +248,3 @@ export const Item = styled.li`
   border: 1px solid rgba(0,0,0,.125);
 
 `;
-
-
-
-
-
-

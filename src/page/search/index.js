@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+
+import Loader from '../../component/loader/Loader';
+
 import axios from 'axios';
 import {
   Container,
@@ -58,6 +61,7 @@ const Home = () => {
   }, [username])
 
 
+
   const renderUser = (user) => {
     return (
       <>
@@ -74,15 +78,16 @@ const Home = () => {
                 <br />
                 <List>
                   <Item><strong>Organizations: </strong>{user.organizations_url ? user.organizations_url : " N/A"}</Item>
-                  <Item><strong>Bio: </strong>{user.login ? user.login : " N/A"}</Item>
+                  <Item><strong>Name: </strong>{user.login ? user.login : " N/A"}</Item>
                   <Item><strong>Type: </strong>{user.type ? user.type : " N/A"}</Item>
-                  <Item><strong>Website/Blog: </strong><a href={user.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>{user.url}</a></Item>
                   <Item><strong>Score: </strong>{user.score ? user.score : " N/A"}</Item>
                 </List>
               </RowRight>
             </Row>
           </ProfileCard>
-        }) : <h2>...Loading</h2>}
+        }) : <Loader />
+
+        }
       </>
 
     );
