@@ -248,3 +248,10 @@ export const Item = styled.li`
   border: 1px solid rgba(0,0,0,.125);
 
 `;
+
+
+export const Loader = styled.div`
+ display: flex;
+ align-items: center;
+ justify-content: center;
+`

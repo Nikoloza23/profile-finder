@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
-import Loader from '../../component/loader/Loader';
+import { SyncLoader } from 'react-spinners'
 
 import axios from 'axios';
+
 import {
   Container,
   FormContent,
@@ -25,6 +26,7 @@ import {
   List,
   Badge,
   Item,
+  Loader
 } from './SearchElement';
 
 
@@ -61,7 +63,6 @@ const Home = () => {
   }, [username])
 
 
-
   const renderUser = (user) => {
     return (
       <>
@@ -85,8 +86,10 @@ const Home = () => {
               </RowRight>
             </Row>
           </ProfileCard>
-        }) : <Loader />
-
+        }) :
+          <Loader>
+            <SyncLoader size={25} />
+          </Loader>
         }
       </>
 
